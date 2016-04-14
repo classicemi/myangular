@@ -7,6 +7,7 @@ function Scope() {
   this.$$asyncQueue = [];
   this.$$applyAsyncQueue = [];
   this.$$applyAsyncId = null;
+  this.$$postDigestQueue = [];
   this.$$phase = null;
 }
 
@@ -64,6 +65,10 @@ Scope.prototype.$digest = function() {
     }
   } while (dirty || this.$$asyncQueue.length);
   this.$clearPhase();
+
+  while (this.$$postDigestQueue.length) {
+    this.$$postDigestQueue.shift()();
+  }
 };
 
 Scope.prototype.$$areEqual = function(newValue, oldValue, valueEq) {
@@ -130,4 +135,8 @@ Scope.prototype.$$flushApplyAsync = function() {
     this.$$applyAsyncQueue.shift()();
   }
   this.$$applyAsyncId = null;
+};
+
+Scope.prototype.$$postDigest = function(fn) {
+  this.$$postDigestQueue.push(fn);
 };
