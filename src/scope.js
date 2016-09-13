@@ -230,7 +230,7 @@ Scope.prototype.$new = function(isolated) {
     child.$root = this.$root;
     child.$$asyncQueue = this.$$asyncQueue;
     child.$$postDigestQueue = this.$$postDigestQueue;
-    child.$$applyAsyncQueue = thid.$$applyAsyncQueue;
+    child.$$applyAsyncQueue = this.$$applyAsyncQueue;
   } else {
     var ChildScope = function() {};
     ChildScope.prototype = this;
